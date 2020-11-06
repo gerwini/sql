@@ -1,9 +1,9 @@
 import os
-import datetime
 import pymysql
-# get username from github
 
-username = os.getenv('GITHUB_ACTOR')
+# Get the username from the Cloud9 workspace
+# (modify this variable if running on another environment)
+username = os.getenv('C9_USER')
 
 # Connect to the database
 connection = pymysql.connect(host='localhost',
@@ -12,10 +12,11 @@ connection = pymysql.connect(host='localhost',
                              db='Chinook')
 try:
     with connection.cursor() as cursor:
-        rows = [("Bob", 21, "1990-02-06 23:04:56"),
-                ("Jim", 56, "1995-05-09 14:04:56"),
-                ("Fred", 100, "1911-09-12 11:04:56")]
-        cursor.executemany("INSERT INTO Friends VALUES (%s, %s, %s);", rows)
+        rows = [(23, 'Bob'),
+                (24, 'Jim'),
+                (25, 'Fred')]
+        cursor.executemany("UPDATE Friends SET age = %s WHERE name = %s;",
+                           rows)
         connection.commit()
 finally:
     connection.close()
